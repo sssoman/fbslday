@@ -64,7 +64,7 @@ public class Main extends AbstractHandler {
 		String[] tokens = null;
 		if(text != null && !text.isEmpty()){
 		tokens = text.split(" ");
-		op = tokens[1];
+		op = tokens[0];
 		}
 		if(op == null || op.equals("search") ||  op.isEmpty()){
 		FBGraph fbGraph = new FBGraph("access_token=EAAZAirncyLTwBAHUW6tGXxJ3YhlhkzmnExHp7irya5kw8Fu7ZBJzumiXoq0aZCa7UAk5GDziwJbZCGGnvkAVx6hZAlQFkSKqALZAbqd1KujNKtXUgWlZAfK9ZCUmTcGxWnpdpv6R1zytzcF97rugFONX84tsDS5EqkIHgvdLi58aVmjKxPGqrAww&expires_in=6429");
@@ -86,8 +86,8 @@ public class Main extends AbstractHandler {
 		}
 		}
 		else if(op.equals("post")){
-			String postId = tokens[2];
-			String commentText = tokens[3];
+			String postId = tokens[1];
+			String commentText = tokens[2];
 			String u = "https://graph.facebook.com/"+ postId + "/comments?" + "access_token=EAAZAirncyLTwBAHUW6tGXxJ3YhlhkzmnExHp7irya5kw8Fu7ZBJzumiXoq0aZCa7UAk5GDziwJbZCGGnvkAVx6hZAlQFkSKqALZAbqd1KujNKtXUgWlZAfK9ZCUmTcGxWnpdpv6R1zytzcF97rugFONX84tsDS5EqkIHgvdLi58aVmjKxPGqrAww&expires_in=6429";
 			URL url = new URL(u);
 			StringBuilder postData = new StringBuilder();
