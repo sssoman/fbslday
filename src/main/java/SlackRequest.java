@@ -1,3 +1,4 @@
+package main.java;
 /**
  * Representation of the Slack Request
    Request of the form 

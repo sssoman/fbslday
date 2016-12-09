@@ -1,5 +1,6 @@
+package main.java;
 /**
- * Response types for SLack Response
+ * Response types for Slack Response
  */
 
 public enum ResponseType {
