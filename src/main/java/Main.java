@@ -71,10 +71,11 @@ public class Main extends AbstractHandler {
 		String graph = fbGraph.getFBGraph();
 		Map<String, String> fbProfileData = fbGraph.getGraphData(graph);
 		StringBuilder sb = new StringBuilder();
-        sb.append(fbProfileData.get("post0"));
-        sb.append("\n");
-        sb.append(fbProfileData.get("post1"));
-        sb.append("\n");
+		for(int i = 0; i < fbProfileData.size(); i++){
+			sb.append(fbProfileData.get("post" + i));
+        		sb.append("\n");
+		}
+        
         SlackResponse sResp = new SlackResponse(sb.toString(), ResponseType.IN_CHANNEL.getValue());
         if (sResp != null) {
 			try {
