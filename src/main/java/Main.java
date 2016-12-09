@@ -86,9 +86,9 @@ public class Main extends AbstractHandler {
         res.getWriter().println("<h1>Hello World</h1>");
 
         // Inform jetty that this request has now been handled
-        baseRequest.setHandled(true);*/
+        baseRequest.setHandled(true);
 
-    }
+    }*/
 
 	public static void main( String[] args ) throws Exception
     {
