@@ -57,7 +57,7 @@ public class Main extends AbstractHandler {
     {
 		SlackRequest sRequest = parseRequest(req);
 		String text = sRequest.getText();
-		String op = = null;
+		String op = null;
 		if(text != null && !text.isEmpty()){
 		final String[] tokens = text.split(" ");
 		op = tokens[1];
