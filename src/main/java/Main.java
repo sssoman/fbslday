@@ -76,6 +76,7 @@ public class Main extends AbstractHandler {
 			}
 		}
 		}
+baseRequest.setHandled(true);
 		/*// Declare response encoding and types
 		res.setContentType("text/html; charset=utf-8");
 
