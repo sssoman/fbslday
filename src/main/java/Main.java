@@ -56,9 +56,12 @@ public class Main extends AbstractHandler {
                                                       ServletException
     {
 		SlackRequest sRequest = parseRequest(req);
-		String text = sRequest.getText();
+		String text = null;
+		if(sRequest != null){
+			text = sRequest.getText();
+		}
 		String op = null;
-String[] tokens = null;
+		String[] tokens = null;
 		if(text != null && !text.isEmpty()){
 		tokens = text.split(" ");
 		op = tokens[1];
