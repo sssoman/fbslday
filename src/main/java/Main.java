@@ -68,7 +68,7 @@ public class Main extends AbstractHandler {
 		}
 		if(op == null || op.equals("search") ||  op.isEmpty()){
 		String searchTerm = tokens[1];
-		FBGraph fbGraph = new FBGraph("access_token=EAAZAirncyLTwBAGnJU1KTho7TfgAfsOavZCYQeFogKTLkmcGHoZCZBC8wqIiHK4TOVKv0DFjby5THYoGZChgDOp9XVG2AETu5oj66mxQim1NT5HVpRUf79bku4dh8MZC4w80cl6wXeOdCrEBZBkDlAxv60BVXoZBh0szfpFjIzknZCZBvtHZCnPiG3b&expires_in=3814");
+		FBGraph fbGraph = new FBGraph("access_token=EAAZAirncyLTwBAIKZBNbJIT8tZB0CZAI3tdGkSiZC0o2fk7YZBNAfWknd19IlntRMGAFTAhlrOLseInCMzOofjkYERHnEDAUrKFNCN6R960rwQTSK7RKmL6e4STR5PrQ1lqtVu9iyLZCqEeGp5bTguuHGv230dajvweApLPbTZAy4jiZALidmaein&expires_in=6802");
 		String graph = fbGraph.getFBGraph();
 		Map<String, String> fbProfileData = fbGraph.getGraphData(graph, searchTerm);
 		StringBuilder sb = new StringBuilder();
@@ -90,7 +90,7 @@ public class Main extends AbstractHandler {
 		else if(op.equals("post")){
 			String postId = tokens[1];
 			String commentText = tokens[2];
-			String u = "https://graph.facebook.com/"+ postId + "/comments?" + "access_token=EAAZAirncyLTwBAGnJU1KTho7TfgAfsOavZCYQeFogKTLkmcGHoZCZBC8wqIiHK4TOVKv0DFjby5THYoGZChgDOp9XVG2AETu5oj66mxQim1NT5HVpRUf79bku4dh8MZC4w80cl6wXeOdCrEBZBkDlAxv60BVXoZBh0szfpFjIzknZCZBvtHZCnPiG3b&expires_in=3814";
+			String u = "https://graph.facebook.com/"+ postId + "/comments?" + "access_token=EAAZAirncyLTwBAIKZBNbJIT8tZB0CZAI3tdGkSiZC0o2fk7YZBNAfWknd19IlntRMGAFTAhlrOLseInCMzOofjkYERHnEDAUrKFNCN6R960rwQTSK7RKmL6e4STR5PrQ1lqtVu9iyLZCqEeGp5bTguuHGv230dajvweApLPbTZAy4jiZALidmaein&expires_in=6802";
 			URL url = new URL(u);
 			StringBuilder postData = new StringBuilder();
 			Map<String,Object> params = new LinkedHashMap<>();
