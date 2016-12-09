@@ -57,8 +57,8 @@ public class Main extends AbstractHandler {
 			
 		FBConnection fbConnection = new FBConnection();
 		String accessToken = fbConnection.getAccessToken(code);
-
-		FBGraph fbGraph = new FBGraph(accessToken);
+		*/
+		FBGraph fbGraph = new FBGraph("EAAZAirncyLTwBABSIAXqX18iZA3XLf69wzULcZAcdbEL1vFMTYZCdOZB3lxZCEICLdliit7ZCRIbYmQKY670WDDNVdCEksUgQ89QFyktjhH6EnXsPTAyH6WE9IDucUidMI0jB7ZC5eYCTRIDt4mj9nzTmG5Mtqtbhve69VZCD4Pp3IpMTpK16a3ac&expires_in=4081");
 		String graph = fbGraph.getFBGraph();
 		Map<String, String> fbProfileData = fbGraph.getGraphData(graph);
 		StringBuilder sb = new StringBuilder();
@@ -75,8 +75,8 @@ public class Main extends AbstractHandler {
 				e.printStackTrace();
 			}
 		}
-		}*/
-		// Declare response encoding and types
+		}
+		/*// Declare response encoding and types
 		res.setContentType("text/html; charset=utf-8");
 
         // Declare response status code
@@ -86,7 +86,7 @@ public class Main extends AbstractHandler {
         res.getWriter().println("<h1>Hello World</h1>");
 
         // Inform jetty that this request has now been handled
-        baseRequest.setHandled(true);
+        baseRequest.setHandled(true);*/
 
     }
 
