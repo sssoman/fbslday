@@ -65,7 +65,7 @@ public class FBGraph {
 			for (int i = 0; i < feeds.length(); i++) {
 				  JSONObject post = feeds.getJSONObject(i);
 				  System.out.println(post.getString("message") + " " + post.getString("id"));;
-				  fbProfile.put("post" + i, post.getString("message"));
+				  fbProfile.put("post" + i, post.getString("message")+ " " + post.getString("id"));
 				}
 				
 		} catch (JSONException e) {
