@@ -58,8 +58,9 @@ public class Main extends AbstractHandler {
 		SlackRequest sRequest = parseRequest(req);
 		String text = sRequest.getText();
 		String op = null;
+String[] tokens = null;
 		if(text != null && !text.isEmpty()){
-		final String[] tokens = text.split(" ");
+		tokens = text.split(" ");
 		op = tokens[1];
 		}
 		if(op.equals("search") || op == null || op.isEmpty()){
