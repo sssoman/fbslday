@@ -58,7 +58,7 @@ public class Main extends AbstractHandler {
 		FBConnection fbConnection = new FBConnection();
 		String accessToken = fbConnection.getAccessToken(code);
 		*/
-		FBGraph fbGraph = new FBGraph("EAAZAirncyLTwBAE85u79ogNWg4zX6zVoWKvT98DQaPWJZAbtybJlpG7JaJKKwClDnLlOcLeEl3cge95sccZBlwAgnA3da84VDzUZCPbj5CmUt6FtePaekemFsitoIZCPZByYsFwugd931Rsg2aNbyZAYawWwOZBT2ONmRaeqEEV6UAifvy8iZCuas&expires_in=7072");
+		FBGraph fbGraph = new FBGraph("access_token=EAAZAirncyLTwBAE85u79ogNWg4zX6zVoWKvT98DQaPWJZAbtybJlpG7JaJKKwClDnLlOcLeEl3cge95sccZBlwAgnA3da84VDzUZCPbj5CmUt6FtePaekemFsitoIZCPZByYsFwugd931Rsg2aNbyZAYawWwOZBT2ONmRaeqEEV6UAifvy8iZCuas&expires_in=7072");
 		String graph = fbGraph.getFBGraph();
 		Map<String, String> fbProfileData = fbGraph.getGraphData(graph);
 		StringBuilder sb = new StringBuilder();
