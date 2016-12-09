@@ -52,13 +52,12 @@ public class Main extends AbstractHandler {
                         HttpServletResponse res ) throws IOException,
                                                       ServletException
     {
-		/*code = req.getParameter("code");
-		if (code != null && !code.equals("")) {
-			
-		FBConnection fbConnection = new FBConnection();
-		String accessToken = fbConnection.getAccessToken(code);
-		*/
-		FBGraph fbGraph = new FBGraph("access_token=EAAZAirncyLTwBAE85u79ogNWg4zX6zVoWKvT98DQaPWJZAbtybJlpG7JaJKKwClDnLlOcLeEl3cge95sccZBlwAgnA3da84VDzUZCPbj5CmUt6FtePaekemFsitoIZCPZByYsFwugd931Rsg2aNbyZAYawWwOZBT2ONmRaeqEEV6UAifvy8iZCuas&expires_in=7072");
+		SlackRequest sRequest = parseRequest(req);
+		String text = sRequest.getText();
+		final String[] tokens = text.split(" ");
+		String op = tokens[1];
+		if(op.equals("search")){
+		FBGraph fbGraph = new FBGraph("access_token=EAAZAirncyLTwBAHUW6tGXxJ3YhlhkzmnExHp7irya5kw8Fu7ZBJzumiXoq0aZCa7UAk5GDziwJbZCGGnvkAVx6hZAlQFkSKqALZAbqd1KujNKtXUgWlZAfK9ZCUmTcGxWnpdpv6R1zytzcF97rugFONX84tsDS5EqkIHgvdLi58aVmjKxPGqrAww&expires_in=6429");
 		String graph = fbGraph.getFBGraph();
 		Map<String, String> fbProfileData = fbGraph.getGraphData(graph);
 		StringBuilder sb = new StringBuilder();
@@ -74,6 +73,35 @@ public class Main extends AbstractHandler {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		}
+		else if(op.equals("post")){
+			String postId = tokens[2];
+			String commentText = tokens[3];
+			String u = "https://graph.facebook.com/"+ postId + "/comments?" + "EAAZAirncyLTwBAHUW6tGXxJ3YhlhkzmnExHp7irya5kw8Fu7ZBJzumiXoq0aZCa7UAk5GDziwJbZCGGnvkAVx6hZAlQFkSKqALZAbqd1KujNKtXUgWlZAfK9ZCUmTcGxWnpdpv6R1zytzcF97rugFONX84tsDS5EqkIHgvdLi58aVmjKxPGqrAww&expires_in=6429";
+			URL url = new URL(u);
+			StringBuilder postData = new StringBuilder();
+			Map<String,Object> params = new LinkedHashMap<>();
+	        params.put("message", commentText);
+	        for (Map.Entry<String,Object> param : params.entrySet()) {
+	            if (postData.length() != 0) postData.append('&');
+	            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+	            postData.append('=');
+	            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+	        }
+	        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+	        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+	        conn.setRequestMethod("POST");
+	        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+	        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+	        conn.setDoOutput(true);
+	        conn.getOutputStream().write(postDataBytes);
+	        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+	        StringBuilder sb = new StringBuilder();
+	        for (int c; (c = in.read()) >= 0;)
+	            sb.append((char)c);
+	        String response = sb.toString();
+	        System.out.println("Comment resp" + response);;
 		}
 	baseRequest.setHandled(true);
 		}
