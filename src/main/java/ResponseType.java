@@ -1,4 +1,3 @@
-package main.java;
 /**
  * Response types for Slack Response
  */
