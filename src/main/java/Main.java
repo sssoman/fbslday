@@ -59,7 +59,7 @@ public class Main extends AbstractHandler {
 		String text = sRequest.getText();
 		final String[] tokens = text.split(" ");
 		String op = tokens[1];
-		if(op.equals("search")){
+		if(op.equals("search") || op == null || op.isEmpty()){
 		FBGraph fbGraph = new FBGraph("access_token=EAAZAirncyLTwBAHUW6tGXxJ3YhlhkzmnExHp7irya5kw8Fu7ZBJzumiXoq0aZCa7UAk5GDziwJbZCGGnvkAVx6hZAlQFkSKqALZAbqd1KujNKtXUgWlZAfK9ZCUmTcGxWnpdpv6R1zytzcF97rugFONX84tsDS5EqkIHgvdLi58aVmjKxPGqrAww&expires_in=6429");
 		String graph = fbGraph.getFBGraph();
 		Map<String, String> fbProfileData = fbGraph.getGraphData(graph);
