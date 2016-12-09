@@ -24,17 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Main extends AbstractHandler {
-	private static final Logger LOGGER  = Logger.getLogger(Main.class.getName());
-
-    private Map<String, TTT> channelGames = new ConcurrentHashMap<>();
-    private Set<String> slackUsers = new HashSet<String>();
-    private StartCommand startCommandInv;
-    private MoveCommand markCommandInv;
-    private StatusCommand statusCommandInv;
-    private String expectedToken;
-    private String apiToken;
-    
-    /* Request parameters*/
+	private static final long serialVersionUID = 1L;
+	private String code="";
+	/* Request parameters*/
     private static final String TOKEN = "token";
     private static final String TEAM_ID = "team_id";
     private static final String TEAM_DOMAIN = "team_domain";
@@ -52,75 +44,62 @@ public class Main extends AbstractHandler {
     private static final String SLACK_CHANNEL_URL = "https://slack.com/api/channels.info";
     private static final String SLACK_USER_URL = "https://slack.com/api/users.info";
 
-    Main(){
-    	channelGames = new ConcurrentHashMap<>();
-    	startCommandInv = new StartCommand();
-    	markCommandInv = new MoveCommand();
-    	statusCommandInv = new StatusCommand();
-        expectedToken = System.getenv("SLACK_AUTH_TOKEN");
-        apiToken = System.getenv("SLACK_API_TOKEN");
-    }
-
 	@Override
-	public void handle(String target, Request baseRequest,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		SlackRequest sRequest = parseRequest(request);
-		SlackResponse slackResponse;
-		if (sRequest == null || sRequest.getText() == null || sRequest.getChannelId() == null) {
-			slackResponse = new SlackResponse(
-					SlackErrors.BAD_REQUEST.getValue(),
-					ResponseType.EPHEMERAL.getValue());
-		} else {
-			final String actualToken = sRequest.getToken();
-			if (actualToken == null || actualToken.isEmpty()
-					|| !actualToken.equals(expectedToken)) {
-				slackResponse = new SlackResponse(
-						SlackErrors.BAD_TOKEN.getValue(),
-						ResponseType.EPHEMERAL.getValue());
-			} else {
-				String text = sRequest.getText();
-				if (text != null && !text.isEmpty()) {
-					final String[] tokens = text.split(Command.SEPARATOR);
-					String command = tokens[0];
-					try {
-					    slackUsers = getSlackUsers(request.getParameter(CHANNEL_ID));
-				    } catch (Exception e) {
-					    // No users found in the team, invalid state but do not want the error to propagate
-					    // Would just add logging/internal errors
-				    	LOGGER.log(Level.SEVERE, "Unable to get slack user list!");
-				    	slackResponse = new SlackResponse(
-				    			SlackErrors.INVALID_CHANNEL_STATE.getValue(),
-								ResponseType.EPHEMERAL.getValue());
-				    }
-					switch (command) {
-					case "start":
-						slackResponse = startCommandInv.invoke(sRequest,
-								channelGames, slackUsers);
-						break;
-					case "move":
-						slackResponse = markCommandInv.invoke(sRequest,
-								channelGames, slackUsers);
-						break;
-					case "status":
-						slackResponse = statusCommandInv.invoke(sRequest,
-								channelGames, slackUsers);
-						break;
-					default:
-						slackResponse = new SlackResponse(
-								SlackErrors.BAD_COMMAND.getValue(),
-								ResponseType.EPHEMERAL.getValue());
-					}
-					if (slackResponse != null) {
-						createResponse(slackResponse, response);
-					}
-				}
+    public void handle( String target,
+                        Request baseRequest,
+                        HttpServletRequest req,
+                        HttpServletResponse res ) throws IOException,
+                                                      ServletException
+    {
+		/*code = req.getParameter("code");
+		if (code != null && !code.equals("")) {
+			
+		FBConnection fbConnection = new FBConnection();
+		String accessToken = fbConnection.getAccessToken(code);
+
+		FBGraph fbGraph = new FBGraph(accessToken);
+		String graph = fbGraph.getFBGraph();
+		Map<String, String> fbProfileData = fbGraph.getGraphData(graph);
+		StringBuilder sb = new StringBuilder();
+        sb.append(fbProfileData.get("post0"));
+        sb.append("\n");
+        sb.append(fbProfileData.get("post1"));
+        sb.append("\n");
+        SlackResponse sResp = new SlackResponse(sb.toString(), ResponseType.IN_CHANNEL.getValue());
+        if (sResp != null) {
+			try {
+				createResponse(sResp, res);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		baseRequest.setHandled(true);
-	}
+		}*/
+		// Declare response encoding and types
+		res.setContentType("text/html; charset=utf-8");
 
-	/*
+        // Declare response status code
+        res.setStatus(HttpServletResponse.SC_OK);
+
+        // Write back response
+        res.getWriter().println("<h1>Hello World</h1>");
+
+        // Inform jetty that this request has now been handled
+        baseRequest.setHandled(true);
+
+    }
+
+	public static void main( String[] args ) throws Exception
+    {
+		Server server = new Server(Integer.valueOf(System.getenv("PORT")));
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        server.setHandler(new Main());
+        server.start();
+        server.join();
+    }
+
+    /*
 	 * Request of the form 
 	 * token=gIkuvaNzQIHg97ATvDxqgjtO
        team_id=T0001
@@ -150,78 +129,18 @@ public class Main extends AbstractHandler {
 		return slackRequest;
 	}
 	
-	void createResponse(SlackResponse slackResponse, HttpServletResponse response){
+	void createResponse(SlackResponse slackResponse, HttpServletResponse response) throws JSONException{
                JSONObject jResp = new JSONObject();
                jResp.put(RESPONSE_TYPE, slackResponse.getResponseType());
                jResp.put(TEXT, slackResponse.getText());
-		response.setContentType("application/json");
-		response.setStatus(HttpStatus.OK_200);
+               response.setContentType("application/json");
+               response.setStatus(HttpStatus.OK_200);
 		try {
 			response.getWriter().print(jResp.toString());
 		} catch (IOException e) {
-			new SlackResponse(
-					SlackErrors.BAD_REQUEST.getValue(),
-					ResponseType.EPHEMERAL.getValue());
+			//new SlackResponse(
+			//		SlackErrors.BAD_REQUEST.getValue(),
+			//		ResponseType.EPHEMERAL.getValue());
 		}
 	}
-
-    public static void main( String[] args ) throws Exception
-    {
-        Server server = new Server(Integer.valueOf(System.getenv("PORT")));
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(new Main());
-        server.start();
-        server.join();
-    }
-    
-    private Set<String> getSlackUsers(String channelId) throws IOException{
-		Set<String> usersList = new HashSet<String>();
-		String response = getJSONResponse(SLACK_CHANNEL_URL, "channel", channelId);
-		JSONObject jo1 = new JSONObject(response.toString());
-		JSONObject jo2 = new JSONObject(jo1.get("channel").toString());
-		JSONArray ja = new JSONArray(jo2.get("members").toString());
-		int n = ja.length();
-		for (int i = 0; i < n; i++) {
-			String userId = ja.getString(i);
-			usersList.add(getUserName(userId));
-		}
-		return usersList;
-    }
-    
-    private String getUserName(String userId) throws IOException{
-    	String response = getJSONResponse(SLACK_USER_URL, "user", userId);
-		JSONObject jo1 = new JSONObject(response);
-		JSONObject jo2 = new JSONObject(jo1.get("user").toString());
-		return jo2.getString("name");
-    }
-    
-    private String getJSONResponse(String urlPath, String paramName, String paramVal) throws IOException{
-		URL url = new URL(urlPath);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-		String urlParameters = null;
-		if(paramName.equals("channel")){
-		    urlParameters = "token=" + apiToken + "&channel=" + paramVal;
-		}
-		else if(paramName.equals("user")){
-			urlParameters = "token=" + apiToken + "&user=" + paramVal;
-		}
-		conn.setDoOutput(true);
-		DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-		wr.writeBytes(urlParameters);
-		wr.flush();
-		wr.close();
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				conn.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-		return response.toString();
-    }
 }
