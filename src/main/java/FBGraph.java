@@ -51,7 +51,7 @@ public class FBGraph {
 		return graph;
 	}
 
-	public Map<String, String> getGraphData(String fbGraph) {
+	public Map<String, String> getGraphData(String fbGraph, String search) {
 		Map<String, String> fbProfile = new HashMap<String, String>();
 		try {
 			JSONObject json = new JSONObject(fbGraph);
@@ -64,8 +64,10 @@ public class FBGraph {
 			JSONArray feeds = json.getJSONArray("data");
 			for (int i = 0; i < feeds.length(); i++) {
 				  JSONObject post = feeds.getJSONObject(i);
+				if(post.getString("message").equals(search)){
 				  System.out.println(post.getString("message") + " " + post.getString("id"));;
 				  fbProfile.put("post" + i, post.getString("message")+ " " + post.getString("id"));
+}
 				}
 				
 		} catch (JSONException e) {
